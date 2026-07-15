@@ -74,14 +74,14 @@ python -m src.main \
 
 **Option 2.  Run with Docker** 
 
-## Linux/macOS/WSL
+**Linux/macOS/WSL**
 
 GNU Make is installed:
 ```
 make run
 ```
 
-## Windows PowerShell
+**Windows PowerShell**
 
 Windows does not include GNU Make by default. Run the equivalent commands manually:
 ```
