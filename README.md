@@ -74,7 +74,7 @@ python -m src.main \
 
 **Option 2.  Run with Docker** 
 
-**Linux/macOS/WSL**
+**linux/mac**
 
 GNU Make is installed:
 ```
