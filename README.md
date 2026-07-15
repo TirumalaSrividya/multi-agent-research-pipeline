@@ -2,12 +2,12 @@
 
 ## Overview
 
-- Developed an **autonomous multi-agent web research and summarization system** that performs end-to-end research on user-specified topics.
-- Implements a collaborative **Planner → Searcher → Synthesizer → Critic** workflow coordinated by a **Supervisor** for intelligent task orchestration.
-- Uses a **Message Bus** (Redis Streams or an in-memory implementation) to enable asynchronous communication between independent agents.
-- Generates **structured, citation-backed research reports** by retrieving, synthesizing, and validating information from multiple sources.
-- Supports **iterative feedback loops**, allowing the Critic agent to request additional research until the desired quality threshold is achieved.
-- Designed with a **modular and scalable architecture**, enabling agents to run either in-process or as independent distributed services using Docker and Redis.
+- Developed an autonomous multi-agent web research and summarization system that performs end-to-end research on user-specified topics.
+- Implements a collaborative Planner → Searcher → Synthesizer → Critic workflow coordinated by a Supervisor for intelligent task orchestration.
+- Uses a Message Bus (Redis Streams or an in-memory implementation) to enable asynchronous communication between independent agents.
+- Generates structured, citation-backed research reports** by retrieving, synthesizing, and validating information from multiple sources.
+- Supports iterative feedback loops, allowing the Critic agent to request additional research until the desired quality threshold is achieved.
+- Designed with a modular and scalable architecture, enabling agents to run either in-process or as independent distributed services using Docker and Redis.
 
 
 ## High-Level Architecture
