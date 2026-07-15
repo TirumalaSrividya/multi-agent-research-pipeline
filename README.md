@@ -57,7 +57,7 @@ pip install pytest
 
 **Run Pipeline**
 
-**Option 1. Run locally without docker**
+Run locally without docker
 
 ```
 python -m src.main --topics-file sample_topics.json --output-dir outputs
@@ -70,17 +70,18 @@ python -m src.main \
     --depth deep \
     --output-dir outputs
 ```
+or 
 
-**Option 2.  Run with Docker** 
+Run with Docker
 
-**linux/mac**
+linux/mac
 
 GNU Make is installed:
 ```
 make run
 ```
 
-**Windows PowerShell**
+Windows PowerShell
 
 Windows does not include GNU Make by default. Run the equivalent commands manually:
 ```
