@@ -1,6 +1,6 @@
 ## Multi-Agent Web Research & Summarization Pipeline
 
-# Overview
+## Overview
 
 - Developed an **autonomous multi-agent web research and summarization system** that performs end-to-end research on user-specified topics.
 - Implements a collaborative **Planner → Searcher → Synthesizer → Critic** workflow coordinated by a **Supervisor** for intelligent task orchestration.
