@@ -82,7 +82,6 @@ make run
 
 Windows PowerShell
 
-Windows does not include GNU Make by default. Run the equivalent commands manually:
 ```
 docker compose build
 docker compose up -d redis
