@@ -1,0 +1,107 @@
+version: "3.9"
+
+# Resource budget (requirement: whole pipeline incl. Redis <= 4GB RAM / 4 cores):
+#   redis:        256MB / 0.5 cpu
+#   app (default): 2GB   / 2.0 cpu   <- runs all 4 agents in-process, concurrently
+#   distributed profile instead splits app's budget across 4 agent containers,
+#   ~ 400MB / 0.4 cpu each, keeping the same overall ceiling.
+
+services:
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--maxmemory", "200mb", "--maxmemory-policy", "allkeys-lru", "--save", ""]
+    mem_limit: 256m
+    cpus: 0.5
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 2s
+      retries: 15
+
+  app:
+    build: .
+    depends_on:
+      redis:
+        condition: service_healthy
+    environment:
+      BUS_BACKEND: ${BUS_BACKEND:-inmemory}
+      REDIS_URL: redis://redis:6379/0
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      TOPIC_CONCURRENCY: ${TOPIC_CONCURRENCY:-6}
+      SEARCHER_CONCURRENCY: ${SEARCHER_CONCURRENCY:-8}
+    volumes:
+      - ./outputs:/app/outputs
+      - ./data:/app/data
+    mem_limit: 2g
+    cpus: 2.0
+    command: ["--topics-file", "sample_topics.json", "--output-dir", "/app/outputs", "--bus", "${BUS_BACKEND:-inmemory}"]
+
+  # ------------------------------------------------------------------ #
+  # Fully distributed mode: each agent as its own process/container,
+  # communicating exclusively via Redis Streams. Run with:
+  #   docker compose --profile distributed up
+  # ------------------------------------------------------------------ #
+  agent-planner:
+    build: .
+    profiles: ["distributed"]
+    depends_on:
+      redis:
+        condition: service_healthy
+    environment:
+      BUS_BACKEND: redis
+      REDIS_URL: redis://redis:6379/0
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+    entrypoint: ["python", "-m", "src.agents.planner"]
+    command: []
+    mem_limit: 400m
+    cpus: 0.4
+
+  agent-searcher:
+    build: .
+    profiles: ["distributed"]
+    depends_on:
+      redis:
+        condition: service_healthy
+    environment:
+      BUS_BACKEND: redis
+      REDIS_URL: redis://redis:6379/0
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      SEARCHER_CONCURRENCY: ${SEARCHER_CONCURRENCY:-8}
+    volumes:
+      - ./data:/app/data
+    entrypoint: ["python", "-m", "src.agents.searcher"]
+    command: []
+    mem_limit: 500m
+    cpus: 0.6
+
+  agent-synthesizer:
+    build: .
+    profiles: ["distributed"]
+    depends_on:
+      redis:
+        condition: service_healthy
+    environment:
+      BUS_BACKEND: redis
+      REDIS_URL: redis://redis:6379/0
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+    entrypoint: ["python", "-m", "src.agents.synthesizer"]
+    command: []
+    mem_limit: 400m
+    cpus: 0.4
+
+  agent-critic:
+    build: .
+    profiles: ["distributed"]
+    depends_on:
+      redis:
+        condition: service_healthy
+    environment:
+      BUS_BACKEND: redis
+      REDIS_URL: redis://redis:6379/0
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+    entrypoint: ["python", "-m", "src.agents.critic"]
+    command: []
+    mem_limit: 400m
+    cpus: 0.4

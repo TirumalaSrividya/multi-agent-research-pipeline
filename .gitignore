@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+outputs/*.json
+outputs/*.trace.json
+data/mock_dataset.json
+.env

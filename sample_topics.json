@@ -1,0 +1,20 @@
+[
+  {
+    "topic": "Impact of artificial intelligence on labor markets",
+    "depth": "moderate",
+    "max_sources": 15,
+    "output_format": "json"
+  },
+  {
+    "topic": "Renewable energy adoption and grid stability challenges",
+    "depth": "deep",
+    "max_sources": 20,
+    "output_format": "json"
+  },
+  {
+    "topic": "Cybersecurity risks in critical infrastructure",
+    "depth": "shallow",
+    "max_sources": 10,
+    "output_format": "json"
+  }
+]
